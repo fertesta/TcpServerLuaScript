@@ -3,7 +3,7 @@ print("Hello Lua!!!\n")
 
 function myfancyfunction(x,y) 
 	print("myfancyfunction()");
-	return x+y
+	return x,y
 end
 
 -- first call mysin function
