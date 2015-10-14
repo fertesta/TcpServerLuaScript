@@ -56,6 +56,7 @@ public:
     CLuaInterpreter(void);
     ~CLuaInterpreter(void);
 
+    void load_file(const std::string& filename);
     void load_file(const char * filename);
     lua_State * getState() const { return _L; }
     

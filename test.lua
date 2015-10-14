@@ -1,11 +1,13 @@
 
-print("Hello Lua!!!\n")
+print("lua: hello!!!\n")
 
-function myfancyfunction(x,y) 
-	print("myfancyfunction()");
-	return x,y
+function handle_connect()
+	print("lua: someone connected")
 end
 
--- first call mysin function
-y=mysin(1.3)
-print("Got result %f",y)
+function handle_recv(data)
+	print("lua: income data received")
+	print("lua: data:", data)
+	-- reply the received data
+	return data 
+end

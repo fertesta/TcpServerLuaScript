@@ -9,8 +9,10 @@
 /* Begin PBXBuildFile section */
 		52454DF71BCD0B24008EE2D3 /* LuaUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52454DF41BCD0B24008EE2D3 /* LuaUtils.cpp */; settings = {ASSET_TAGS = (); }; };
 		52454DFA1BCD0B52008EE2D3 /* liblua.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52454DF91BCD0B52008EE2D3 /* liblua.dylib */; settings = {ASSET_TAGS = (); }; };
-		52454DFC1BCD0BA7008EE2D3 /* libev.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52454DFB1BCD0BA7008EE2D3 /* libev.dylib */; settings = {ASSET_TAGS = (); }; };
 		52454E001BCD1889008EE2D3 /* luaserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52454DFF1BCD1889008EE2D3 /* luaserver.cpp */; settings = {ASSET_TAGS = (); }; };
+		52F7E2401BCD727B0095C032 /* libboost_program_options-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F7E23F1BCD727B0095C032 /* libboost_program_options-mt.a */; settings = {ASSET_TAGS = (); }; };
+		52F7E2421BCD72930095C032 /* libboost_system-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F7E2411BCD72930095C032 /* libboost_system-mt.a */; settings = {ASSET_TAGS = (); }; };
+		52F7E2481BCD766E0095C032 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52F7E2461BCD766E0095C032 /* Application.cpp */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,9 +31,12 @@
 		52454DF41BCD0B24008EE2D3 /* LuaUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaUtils.cpp; path = src/LuaUtils.cpp; sourceTree = "<group>"; };
 		52454DF51BCD0B24008EE2D3 /* LuaUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LuaUtils.hpp; path = src/LuaUtils.hpp; sourceTree = "<group>"; };
 		52454DF91BCD0B52008EE2D3 /* liblua.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblua.dylib; sourceTree = "<group>"; };
-		52454DFB1BCD0BA7008EE2D3 /* libev.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libev.dylib; sourceTree = "<group>"; };
 		52454DFF1BCD1889008EE2D3 /* luaserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = luaserver.cpp; path = src/luaserver.cpp; sourceTree = "<group>"; };
 		52A006A31BA1D6F700052D48 /* server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = server; sourceTree = BUILT_PRODUCTS_DIR; };
+		52F7E23F1BCD727B0095C032 /* libboost_program_options-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libboost_program_options-mt.a"; sourceTree = "<group>"; };
+		52F7E2411BCD72930095C032 /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libboost_system-mt.a"; sourceTree = "<group>"; };
+		52F7E2461BCD766E0095C032 /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Application.cpp; path = src/Application.cpp; sourceTree = "<group>"; };
+		52F7E2471BCD766E0095C032 /* Application.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Application.hpp; path = src/Application.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,8 +44,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52F7E2401BCD727B0095C032 /* libboost_program_options-mt.a in Frameworks */,
 				52454DFA1BCD0B52008EE2D3 /* liblua.dylib in Frameworks */,
-				52454DFC1BCD0BA7008EE2D3 /* libev.dylib in Frameworks */,
+				52F7E2421BCD72930095C032 /* libboost_system-mt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +59,8 @@
 				52454DF41BCD0B24008EE2D3 /* LuaUtils.cpp */,
 				52454DF51BCD0B24008EE2D3 /* LuaUtils.hpp */,
 				52454DFF1BCD1889008EE2D3 /* luaserver.cpp */,
+				52F7E2461BCD766E0095C032 /* Application.cpp */,
+				52F7E2471BCD766E0095C032 /* Application.hpp */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -62,7 +70,8 @@
 			children = (
 				52454DF31BCD0A49008EE2D3 /* src */,
 				52454DF91BCD0B52008EE2D3 /* liblua.dylib */,
-				52454DFB1BCD0BA7008EE2D3 /* libev.dylib */,
+				52F7E23F1BCD727B0095C032 /* libboost_program_options-mt.a */,
+				52F7E2411BCD72930095C032 /* libboost_system-mt.a */,
 				52A006A41BA1D6F700052D48 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -137,6 +146,7 @@
 			files = (
 				52454DF71BCD0B24008EE2D3 /* LuaUtils.cpp in Sources */,
 				52454E001BCD1889008EE2D3 /* luaserver.cpp in Sources */,
+				52F7E2481BCD766E0095C032 /* Application.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
