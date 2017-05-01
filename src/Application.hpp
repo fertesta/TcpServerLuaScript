@@ -11,12 +11,16 @@
 
 #include "LuaUtils.hpp"
 #include <string>
+#include <boost/asio.hpp>
+
+namespace io = boost::asio;
 
 class Application
 {
-    int _port;
+    uint32_t _port = 0;
     std::string _script;
     CLuaInterpreter _interpreter;
+    io::io_service _ioservice;
 public:
     Application(int argc, const char ** argv);
     void initialise();

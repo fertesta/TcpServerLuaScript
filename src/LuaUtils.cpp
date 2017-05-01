@@ -77,7 +77,8 @@ CLuaOpt& CLuaOpt::operator >>(std::string& v)
 
 //////////////////
 
-CLuaInterpreter::CLuaInterpreter() 
+CLuaInterpreter::CLuaInterpreter()
+: _L(nullptr)
 {
 	_L=luaL_newstate();
 	luaL_openlibs(_L);
