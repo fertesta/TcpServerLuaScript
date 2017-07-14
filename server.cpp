@@ -1,116 +1,54 @@
-// server.cpp
-// ~~~~~~~~~~
 //
-// Copyright (c) 2003-2015 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//  TCPServer.cpp
+//  luaserver
 //
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//  Created by Fernando Testa on 14/10/2015.
+//  Copyright © 2015 Fernando Testa. All rights reserved.
 //
 
-#include <ctime>
-#include <iostream>
-#include <string>
-#include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/asio.hpp>
+#include "server.hpp"
 
-using boost::asio::ip::tcp;
 
-std::string make_daytime_string()
-{
-  using namespace std; // For time_t, time and ctime;
-  time_t now = time(0);
-  return ctime(&now);
+void session::handle_read(const boost::system::error_code& error, size_t bytes_transferred) {
+  if (!error)
+  {
+    std::cout << "session[" << this << "]::handle_recv()";
+    
+    {
+      std::string data(data_, bytes_transferred); // WARNING: makes a copy of the buffer.
+      CLuaCall call_handle_recv(interpreter_, "handle_recv");
+      call_handle_recv << data;
+      call_handle_recv.call(1); // number of results expected. Must match the number of operator>> calls.
+      std::string response;
+      call_handle_recv >> response_write_buffer_; // get result, remember, Lua is a FILO stack
+
+      boost::asio::async_write(socket_,
+        boost::asio::buffer(response_write_buffer_),
+        boost::bind(&session::handle_write, this,
+        boost::asio::placeholders::error));
+    }
+    async_read_some();
+
+  }
+  else
+  {
+    if((boost::asio::error::eof == error) ||
+      (boost::asio::error::connection_reset == error)) {
+        std::cout << "session[" << this << "]::handle_read disconnected\n";
+      }
+    delete this;
+  }
 }
 
-class tcp_connection
-  : public boost::enable_shared_from_this<tcp_connection>
-{
-public:
-  typedef boost::shared_ptr<tcp_connection> pointer;
-
-  static pointer create(boost::asio::io_service& io_service)
-  {
-    return pointer(new tcp_connection(io_service));
-  }
-
-  tcp::socket& socket()
-  {
-    return socket_;
-  }
-
-  void start()
-  {
-    message_ = make_daytime_string();
-
-    boost::asio::async_write(socket_, boost::asio::buffer(message_),
-        boost::bind(&tcp_connection::handle_write, shared_from_this(),
+void session::handle_write(const boost::system::error_code& error) {
+  if (!error) {
+    socket_.async_read_some(boost::asio::buffer(data_, max_length),
+        boost::bind(&session::handle_read, this,
           boost::asio::placeholders::error,
           boost::asio::placeholders::bytes_transferred));
   }
-
-private:
-  tcp_connection(boost::asio::io_service& io_service)
-    : socket_(io_service)
-  {
+  else {
+    delete this;
   }
-
-  void handle_write(const boost::system::error_code& /*error*/,
-      size_t /*bytes_transferred*/)
-  {
-  }
-
-  tcp::socket socket_;
-  std::string message_;
-};
-
-class tcp_server
-{
-public:
-  tcp_server(boost::asio::io_service& io_service)
-    : acceptor_(io_service, tcp::endpoint(tcp::v4(), 1313))
-  {
-    start_accept();
-  }
-
-private:
-  void start_accept()
-  {
-    tcp_connection::pointer new_connection =
-      tcp_connection::create(acceptor_.get_io_service());
-
-    acceptor_.async_accept(new_connection->socket(),
-        boost::bind(&tcp_server::handle_accept, this, new_connection,
-          boost::asio::placeholders::error));
-  }
-
-  void handle_accept(tcp_connection::pointer new_connection,
-      const boost::system::error_code& error)
-  {
-    if (!error)
-    {
-      new_connection->start();
-    }
-
-    start_accept();
-  }
-
-  tcp::acceptor acceptor_;
-};
-
-int main()
-{
-  try
-  {
-    boost::asio::io_service io_service;
-    tcp_server server(io_service);
-    io_service.run();
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << e.what() << std::endl;
-  }
-
-  return 0;
 }
+

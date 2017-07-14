@@ -4,7 +4,7 @@
 #include <sstream>
 #include <stdio.h>
 #include "lua.hpp"
-#include "LuaUtils.hpp"
+#include "lua_utils.hpp"
 
 void report (lua_State *L) {
   if (!lua_isnil(L, -1)) {

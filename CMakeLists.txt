@@ -19,10 +19,9 @@ configure_file (
  
 # add the executable
 add_executable(LuaServer 
-  luaserver.cpp
-  Application.cpp
-  LuaUtils.cpp
-  TCPServer.cpp
+  application.cpp
+  lua_utils.cpp
+  server.cpp
 )
 
 target_link_libraries (LuaServer 

@@ -6,7 +6,7 @@
 /*
  Check http://www.rasterbar.com/products/luabind/docs.html 
  for more sofisticated C++ to Lua binding.
- Refs: To see also Nginx binding to lua and usign of coroutines. 
+ Refs: To see also Nginx binding to lua and coroutines. 
     See also https://openresty.org/
  */
 

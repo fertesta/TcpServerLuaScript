@@ -9,7 +9,7 @@
 #ifndef Application_hpp
 #define Application_hpp
 
-#include "LuaUtils.hpp"
+#include "lua_utils.hpp"
 #include "LuaServerConfig.h"
 #include <string>
 #include <boost/asio.hpp>

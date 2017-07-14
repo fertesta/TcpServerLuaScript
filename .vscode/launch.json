@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb-mi",
+            "request": "launch",
+            "name": "Launch Program (LLDB)",
+            "target": "lab",
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "C++ Launch (GDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "x64",
+            "program": "${workspaceRoot}/luaserver",
+            "args": ["--script", "test.lua"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+             "miDebuggerPath": "/usr/local/bin/lldb-mi"
+        }
+    ]
+}

@@ -6,8 +6,8 @@
 //  Copyright © 2015 Fernando Testa. All rights reserved.
 //
 
-#include "Application.hpp"
-#include "TCPServer.hpp"
+#include "application.hpp"
+#include "server.hpp"
 #include <iostream>
 #include <boost/program_options.hpp>
 
@@ -68,3 +68,26 @@ void Application::run()
 }
 
 
+
+/*
+ Check http://www.rasterbar.com/products/luabind/docs.html 
+ for more sofisticated C++ to Lua binding.
+ Refs: To see also Nginx binding to lua and coroutines. 
+    See also https://openresty.org/
+ */
+
+
+int main(int argc, const char**argv)
+{
+    try{
+        Application app(argc,argv);
+        app.initialise();
+        app.run();
+    }
+    catch(std::exception&e)
+    {
+        std::cerr << e.what() << std::endl;
+        return -1;
+    }
+    return 0;
+}
