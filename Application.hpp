@@ -10,6 +10,7 @@
 #define Application_hpp
 
 #include "LuaUtils.hpp"
+#include "LuaServerConfig.h"
 #include <string>
 #include <boost/asio.hpp>
 
@@ -19,8 +20,6 @@ class Application
 {
     uint32_t _port = 0;
     std::string _script;
-    CLuaInterpreter _interpreter;
-    io::io_service _ioservice;
 public:
     Application(int argc, const char ** argv);
     void initialise();

@@ -22,9 +22,7 @@ int l_sin (lua_State *L) {
 }
 
 
-Application::Application(int argc, const char ** argv)
-: _ioservice()
-{
+Application::Application(int argc, const char ** argv) {
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help", "produce help message")
@@ -47,38 +45,25 @@ Application::Application(int argc, const char ** argv)
     if (!vm.count("port")) {
         throw std::runtime_error("missing parameter 'port'");
     }
-    
+
+//    _interpreter.register_function("mysin" ,l_sin);
+//    _interpreter.load_file(_script);    
 }
 
 void Application::initialise()
 {
-    _interpreter.register_function("mysin" ,l_sin);
-    _interpreter.load_file(_script);
-    TCPServer server(_port);
-    auto handler_receive = [this]()
-    {
-        
-    };
-    server.set_handler_receive(handler_receive);
-    
-    server.run();
+
 }
 
 void Application::run()
 {
     std::cout << "luaserver started with script '" << _script << "' on port " << _port << std::endl;
     
-    std::string data;
-    {
-        CLuaCall call_handle_recv(_interpreter, "handle_recv");
-        call_handle_recv << "fake data here";
-        call_handle_recv.call(1); // number of results expected. Must match.
-        call_handle_recv >> data; // get result, remember, Lua is a FILO stack
-    }
-    std::cout << "handle_recv()=(" << data << ") got Lua call\n";
+    boost::asio::io_service io_service;
+    server srv(io_service, _port);
     
     // run the IO service
-    _ioservice.run();
+    io_service.run();
     
 }
 

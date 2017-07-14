@@ -2,3 +2,5 @@
 luaserver
 *.a
 *.dylib
+build/*
+

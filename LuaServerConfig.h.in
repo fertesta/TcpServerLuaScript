@@ -1,0 +1,3 @@
+// LuaServerConfig.h.in
+#cmakedefine LuaServer_VERSION_MAJOR
+#cmakedefine LuaServer_VERSION_MINOR
