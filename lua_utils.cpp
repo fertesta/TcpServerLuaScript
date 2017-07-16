@@ -144,13 +144,17 @@ CLuaCall::CLuaCall(lua_State *L, const char * func_name)
 : _L(L), nargs_(0)
 {
     // See http://stackoverflow.com/questions/10087226/lua-5-2-lua-globalsindex-alternative
-    lua_getglobal(_L,func_name); // pushes func_name function onto the stack
-    if(LUA_TFUNCTION!=lua_type(_L, -1))
+    lua_getglobal(_L, func_name); // pushes func_name function onto stack
+	/*
+    if(LUA_TFUNCTION != lua_type(_L, -1))
     {
         std::stringstream ss;
-        ss << "CLuaCall::CLuaCall(): lua_getglobal('"<< func_name << "') must return a LUA_TFUNCTION. Attempted ";
+        ss << "CLuaCall::CLuaCall(): lua_getglobal('" 
+		   << func_name << "') should return a LUA_TFUNCTION but got " 
+		   << lua_typename(_L, -1) << " instead";
         throw lua_exception(ss.str());
     }
+	*/
 }
 
 CLuaCall::~CLuaCall()

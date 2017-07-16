@@ -22,7 +22,6 @@ class Application
     std::string _script;
 public:
     Application(int argc, const char ** argv);
-    void initialise();
     void run();
 };
 

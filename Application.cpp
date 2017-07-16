@@ -50,17 +50,12 @@ Application::Application(int argc, const char ** argv) {
 //    _interpreter.load_file(_script);    
 }
 
-void Application::initialise()
-{
-
-}
-
 void Application::run()
 {
     std::cout << "luaserver started with script '" << _script << "' on port " << _port << std::endl;
     
     boost::asio::io_service io_service;
-    server srv(io_service, _port);
+    server srv(io_service, _port, _script);
     
     // run the IO service
     io_service.run();
@@ -81,7 +76,6 @@ int main(int argc, const char**argv)
 {
     try{
         Application app(argc,argv);
-        app.initialise();
         app.run();
     }
     catch(std::exception&e)

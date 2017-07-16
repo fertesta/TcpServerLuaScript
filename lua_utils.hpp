@@ -77,5 +77,3 @@ template<class T>
 T luaH_getlightpointer(lua_State*L, const char * name) {
     return reinterpret_cast<T> ( get_lightuserdata(L,name) );
 }
-
-
