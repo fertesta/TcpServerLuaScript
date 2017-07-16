@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "*.ipp": "cpp",
-        "system_error": "cpp",
-        "valarray": "cpp"
-    }
-}
