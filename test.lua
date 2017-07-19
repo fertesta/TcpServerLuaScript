@@ -12,6 +12,6 @@ end
 function handle_recv(data)
 	print("lua: income data received")
 	print("lua: data:", data)
-	-- reply the received data
-	return data:len()
+	funky("concat some stuff with data: " .. data);
+	return data
 end

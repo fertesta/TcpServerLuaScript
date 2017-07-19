@@ -188,37 +188,37 @@ CLuaCall& CLuaCall::operator<< (void* p) {
 
 CLuaCall& CLuaCall::operator<< (const int v)
 {
-	lua_pushinteger(L_,v);
+	lua_pushinteger(L_, v);
 	++nargs_;
 	return *this;
 }
 
 CLuaCall& CLuaCall::operator<< (const std::string& v)
 {
-	lua_pushstring(L_,v.c_str());
+	lua_pushstring(L_, v.c_str());
 	++nargs_;
 	return *this;
 }
 
 CLuaCall& CLuaCall::operator>> (double& v)
 {
-	v = lua_tonumber(L_,-1);
-	lua_pop(L_,1);
+	v = lua_tonumber(L_, -1);
+	lua_pop(L_, 1);
 	return *this;	
 }
 
 CLuaCall& CLuaCall::operator>> (long& v)
 {
-	v = lua_tointeger(L_,-1);
-	lua_pop(L_,1);
+	v = lua_tointeger(L_, -1);
+	lua_pop(L_, 1);
 	return *this;	
 }
 
 CLuaCall& CLuaCall::operator>> (std::string& v)
 {
-	const char * str = lua_tostring(L_,-1);
+	const char * str = lua_tostring(L_, -1);
 	if(str) v = str;
-	lua_pop(L_,1);
+	lua_pop(L_, 1);
 	return *this;
 }
 

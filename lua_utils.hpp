@@ -12,12 +12,12 @@ public:
 
 
 // handy function to save on global table pointers.
-void set_lightuserdata(lua_State*L, const char * name, void*data);
-void*get_lightuserdata(lua_State*L, const char * name);
+void set_lightuserdata(lua_State* L, const char * name, void* data);
+void* get_lightuserdata(lua_State* L, const char * name);
 
 class CLuaOpt
 {
-    lua_State*L_;
+    lua_State* L_;
     int nopts_;
     int calls_;
 public:
