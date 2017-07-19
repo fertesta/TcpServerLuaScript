@@ -128,8 +128,8 @@ void set_lightuserdata(lua_State*L,const char * name, void * data)
 
 void * get_lightuserdata(lua_State*L,const char * name)
 {
-    lua_getglobal(L,name); // pushes on stack
-    void * ud = lua_touserdata(L,-1); // pick from stack
+    lua_getglobal(L, name); // pushes on stack
+    void * ud = lua_touserdata(L, -1); // pick from stack
     lua_pop(L,1);
     if(ud)
         return ud;
@@ -141,20 +141,18 @@ void * get_lightuserdata(lua_State*L,const char * name)
 ////////////////////////////////////////////// 
 
 CLuaCall::CLuaCall(lua_State *L, const char * func_name)
-: _L(L), nargs_(0)
+: L_(L), nargs_(0)
 {
     // See http://stackoverflow.com/questions/10087226/lua-5-2-lua-globalsindex-alternative
-    lua_getglobal(_L, func_name); // pushes func_name function onto stack
-	/*
-    if(LUA_TFUNCTION != lua_type(_L, -1))
+    lua_getglobal(L_, func_name); // pushes func_name function onto stack
+    if(LUA_TFUNCTION != lua_type(L_, -1))
     {
         std::stringstream ss;
         ss << "CLuaCall::CLuaCall(): lua_getglobal('" 
 		   << func_name << "') should return a LUA_TFUNCTION but got " 
-		   << lua_typename(_L, -1) << " instead";
+		   << lua_typename(L_, -1) << " instead";
         throw lua_exception(ss.str());
     }
-	*/
 }
 
 CLuaCall::~CLuaCall()
@@ -164,57 +162,63 @@ CLuaCall::~CLuaCall()
 
 void CLuaCall::call(int nresults)
 {
-	int rc = lua_pcall(_L, nargs_, nresults, NULL);
+	int rc = lua_pcall(L_, nargs_, nresults, NULL);
 	switch(rc)
 	{
 	case 0:
 		return;
 	case LUA_ERRRUN:
-		report(_L);
+		report(L_);
         //throw lua_exception("LUA_ERRRUN: Lua script runtime error.");
             
 	case LUA_ERRMEM:
-		report(_L);
+		report(L_);
 		lua_exception("LUA_ERRMEM: memory allocation error");
 	case LUA_ERRERR:
-		report(_L);
+		report(L_);
 		lua_exception("LUA_ERRRUN: error while running the error handler function.");
 	}
 }
 
+CLuaCall& CLuaCall::operator<< (void* p) {
+	lua_pushlightuserdata(L_, p);
+	++nargs_;
+	return *this;
+}
+
 CLuaCall& CLuaCall::operator<< (const int v)
 {
-	lua_pushinteger(_L,v);
+	lua_pushinteger(L_,v);
 	++nargs_;
 	return *this;
 }
 
 CLuaCall& CLuaCall::operator<< (const std::string& v)
 {
-	lua_pushstring(_L,v.c_str());
+	lua_pushstring(L_,v.c_str());
 	++nargs_;
 	return *this;
 }
 
 CLuaCall& CLuaCall::operator>> (double& v)
 {
-	v = lua_tonumber(_L,-1);
-	lua_pop(_L,1);
+	v = lua_tonumber(L_,-1);
+	lua_pop(L_,1);
 	return *this;	
 }
 
 CLuaCall& CLuaCall::operator>> (long& v)
 {
-	v = lua_tointeger(_L,-1);
-	lua_pop(_L,1);
+	v = lua_tointeger(L_,-1);
+	lua_pop(L_,1);
 	return *this;	
 }
 
 CLuaCall& CLuaCall::operator>> (std::string& v)
 {
-	const char * str = lua_tostring(_L,-1);
+	const char * str = lua_tostring(L_,-1);
 	if(str) v = str;
-	lua_pop(_L,1);
+	lua_pop(L_,1);
 	return *this;
 }
 

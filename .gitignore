@@ -3,4 +3,5 @@ luaserver
 *.a
 *.dylib
 build/*
+.vscode/
 

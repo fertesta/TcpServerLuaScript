@@ -50,6 +50,7 @@ public:
   }
 
   void handle_accepted();
+  void handle_disconnect();
 private:
   void handle_recv(const boost::system::error_code& error, size_t bytes_transferred);
   void handle_write(const boost::system::error_code& error);

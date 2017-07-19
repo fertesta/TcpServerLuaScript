@@ -33,7 +33,7 @@ public:
  */
 class CLuaCall
 {
-    lua_State *_L;
+    lua_State* L_;
     int nargs_;
 public:
     CLuaCall(lua_State*L, const char * f);
@@ -41,6 +41,8 @@ public:
 
     CLuaCall& operator<< (const int v);
     CLuaCall& operator<< (const std::string& v);
+    CLuaCall& operator<< (void* p);
+
     void call(int nresults);
     CLuaCall& operator>> (double& v);
     CLuaCall& operator>> (long& v);
