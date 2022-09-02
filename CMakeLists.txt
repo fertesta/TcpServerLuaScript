@@ -19,6 +19,8 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/LuaServerConfig.h"
   )
 
+add_subdirectory(${LUA_DIR})
+
 # add the executable
 add_executable(LuaServer
   Application.cpp
@@ -26,11 +28,10 @@ add_executable(LuaServer
   server.cpp
 )
 
-add_library(lua STATIC IMPORTED)
 set_target_properties(lua PROPERTIES IMPORTED_LOCATION ${LUA_SRC})
 
 target_link_libraries (${PROJECT_NAME} PUBLIC
-  ${PROJECT_SOURCE_DIR}/${LUA_SRC}/liblua.a
+  lua
   boost_system
   pthread
   dl

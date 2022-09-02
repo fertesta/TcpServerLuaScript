@@ -11,11 +11,6 @@ The program was used as an exercise to practice CMake, Lua bindings and Boost As
 
 To build the project you need the Boost libraries installed in your system. Lua is tiny enough so it is provided with this project.
 
-First, build Lua. From project root:
-```
-cd lib/lua-5.4.4
-make
-```
 
 From project root, build the LuaServer with:
 ```
