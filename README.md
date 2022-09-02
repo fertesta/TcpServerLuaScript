@@ -1,13 +1,15 @@
 LuaServer
 =========
 
-LuaServer is a tiny TCP server that listens to a port and upon connection, data receiving, disconnection calls the corresponding lua callbacks. The server shows how to expose an 'api' that the scrip might call, executing some C++ code.
+LuaServer is a tiny TCP server that listens to a port and upon connection, data receiving, and disconnection, it calls the corresponding lua callbacks.
 
-All executions are asynchronous and there is no polling loop inside lua. As there is currently only one thread of execution, the script callbacks should return as soon as possible to allow C++ code to process other requests. 
+There is also an example on how to call a function trom Lua script back to the server.
+
+All executions are asynchronous and there is no polling loop inside lua. As there is currently only one thread of execution, the script callbacks should return as soon as possible to allow C++ code to process other requests.
 
 The program is used as an exercise to practice CMake, Lua bindings and Boost Asio.
 
-To build the project you need the Boost libraries and Lua installed in your system. 
+To build the project you need the Boost libraries installed in your system. Lua is tiny enough so it is provider
 To build:
 ```
 mkdir build

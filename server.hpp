@@ -19,17 +19,18 @@ class session;
 class server;
 
 using SessionPtr = std::shared_ptr<session>;
+namespace io = boost::asio;
 
 class session {
   static const int max_length = 1024;
   char data_[max_length];
-  boost::asio::ip::tcp::socket socket_;
+  io::ip::tcp::socket socket_;
   std::string response_write_buffer_;
   CLuaInterpreter interpreter_;
-  boost::asio::io_service& io_service_;
+  io::io_service& io_service_;
   server * server_ = nullptr;
 public:
-  session(server * srv, boost::asio::io_service& io_service, const std::string& luascript)
+  session(server * srv, io::io_service& io_service, const std::string& luascript)
     : socket_(io_service), io_service_(io_service), server_(srv) {
       interpreter_.load_file(luascript);
   }
@@ -38,15 +39,15 @@ public:
     std::cout << "~session()[" << this << "]\n";
   }
 
-  boost::asio::ip::tcp::socket& socket() {
+  io::ip::tcp::socket& socket() {
     return socket_;
   }
 
   void async_read_some() {
-    socket_.async_read_some(boost::asio::buffer(data_, max_length),
+    socket_.async_read_some(io::buffer(data_, max_length),
       boost::bind(&session::handle_recv, this,
-        boost::asio::placeholders::error,
-        boost::asio::placeholders::bytes_transferred));
+        io::placeholders::error,
+        io::placeholders::bytes_transferred));
   }
 
   void handle_accepted();
@@ -59,14 +60,14 @@ private:
 
 class server
 {
-  boost::asio::io_service& io_service_;
-  boost::asio::ip::tcp::acceptor acceptor_;
+  io::io_service& io_service_;
+  io::ip::tcp::acceptor acceptor_;
   std::string luascript_;
   std::vector<SessionPtr> sessions_;
 public:
-  server(boost::asio::io_service& io_service, short port, const std::string& luascript)
+  server(io::io_service& io_service, short port, const std::string& luascript)
     : io_service_(io_service),
-      acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)), 
+      acceptor_(io_service, io::ip::tcp::endpoint(io::ip::tcp::v4(), port)),
       luascript_(luascript) {
     start_accept();
   }
@@ -83,4 +84,4 @@ private:
   }
 };
 
-#endif // 
+#endif //

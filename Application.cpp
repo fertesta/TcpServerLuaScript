@@ -6,7 +6,7 @@
 //  Copyright © 2015 Fernando Testa. All rights reserved.
 //
 
-#include "application.hpp"
+#include "Application.hpp"
 #include "server.hpp"
 #include <iostream>
 #include <boost/program_options.hpp>
