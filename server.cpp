@@ -35,7 +35,7 @@ void session::handle_recv(const boost::system::error_code& error, size_t bytes_t
 
   std::string data(data_, bytes_transferred); // WARNING: makes a copy of the buffer.
 
-  CLuaCall call_handle_recv(interpreter_, "handle_recv");
+  CLuaCall call_handle_recv(interpreter_.getState(), "handle_recv");
   call_handle_recv << data;
   call_handle_recv.call(1); // number of results expected. Must match the number of operator>> calls.
   call_handle_recv >> response_write_buffer_; // get result, remember, Lua is a FILO stack
@@ -66,14 +66,14 @@ void session::handle_accepted() {
   set_lightuserdata(interpreter_.getState(), api_session_pointer, this);
   interpreter_.register_function("funky", funkyfunction);
 
-  CLuaCall call_handle_connected(interpreter_, "handle_connect");
+  CLuaCall call_handle_connected(interpreter_.getState(), "handle_connect");
   call_handle_connected << reinterpret_cast<void*>(this);
   call_handle_connected.call(0);
   async_read_some();
 };
 
 void session::handle_disconnect() {
-  CLuaCall call_handle_connected(interpreter_, "handle_disconnect");
+  CLuaCall call_handle_connected(interpreter_.getState(), "handle_disconnect");
   call_handle_connected << reinterpret_cast<void*>(this);
   call_handle_connected.call(0);
 }

@@ -65,7 +65,7 @@ public:
     /** This operator enables us to mindlessly pass the CLuaInterpreter to lua calls
      and an implicit conversion will be done by the complier 
      */
-    operator lua_State*() { return _L; };
+    explicit operator lua_State*() { return _L; };
     
     /** Register a function at global level.
      */
