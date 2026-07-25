@@ -31,8 +31,7 @@ CLuaOpt::CLuaOpt(lua_State*L, int nargs)
 
 CLuaOpt::~CLuaOpt()
 {
-	for(int i=0;i<nopts_;i++)
-		lua_pop(L_,-1);
+	lua_pop(L_, nopts_);
 }
 
 CLuaOpt& CLuaOpt::operator >>(double& v)
