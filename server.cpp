@@ -30,7 +30,10 @@ void session::handle_recv(const boost::system::error_code& error, size_t bytes_t
     return;
   }
 
-  std::string data(data_, bytes_transferred); // WARNING: makes a copy of the buffer.
+  std::istream stream(&read_buf_);
+  std::string data;
+  std::getline(stream, data);
+  data += '\n';
 
   response_write_buffer_.clear();
   CLuaCall call_handle_recv(interpreter_, "handle_recv");
@@ -43,6 +46,8 @@ void session::handle_recv(const boost::system::error_code& error, size_t bytes_t
       boost::asio::buffer(response_write_buffer_),
       boost::bind(&session::handle_write, this,
       boost::asio::placeholders::error));
+  } else {
+    async_read_some();
   }
 }
 
@@ -52,10 +57,7 @@ void session::handle_write(const boost::system::error_code& error) {
     return;
   }
 
-  socket_.async_read_some(boost::asio::buffer(data_, max_length),
-      boost::bind(&session::handle_recv, this,
-        boost::asio::placeholders::error,
-        boost::asio::placeholders::bytes_transferred));
+  async_read_some();
 }
 
 void session::handle_accepted() {
