@@ -14,13 +14,6 @@
 namespace po = boost::program_options;
 namespace io = boost::asio;
 
-// testing exporting some C function to lua
-int l_sin (lua_State *L) {
-    double d = luaL_checknumber(L, 1);
-    lua_pushnumber(L, sin(d));
-    return 1;  /* number of results */
-}
-
 
 Application::Application(int argc, const char ** argv) {
     po::options_description desc("Allowed options");
