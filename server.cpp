@@ -62,6 +62,7 @@ void session::handle_write(const boost::system::error_code& error) {
 }
 
 void session::handle_accepted() {
+  connected_ = true;
 
   // save our pointer into a global table.
   set_lightuserdata(interpreter_.getState(), api_session_pointer, this);
@@ -87,7 +88,8 @@ bool operator==(const SessionPtr& x, session *y) {
 void server::session_erase(session * s) {
   auto it = std::find(sessions_.begin(), sessions_.end(), s);
   if(it == sessions_.end()) return;
-  (*it)->handle_disconnect();
+  if ((*it)->is_connected())
+    (*it)->handle_disconnect();
   sessions_.erase(it);
 }
 

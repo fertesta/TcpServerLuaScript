@@ -29,6 +29,7 @@ class session {
   CLuaInterpreter interpreter_;
   io::io_service& io_service_;
   server * server_ = nullptr;
+  bool connected_ = false;
 public:
   session(server * srv, io::io_service& io_service, const std::string& luascript)
     : socket_(io_service), io_service_(io_service), server_(srv) {
@@ -50,6 +51,7 @@ public:
         io::placeholders::bytes_transferred));
   }
 
+  bool is_connected() const { return connected_; }
   void handle_accepted();
   void handle_disconnect();
 private:
