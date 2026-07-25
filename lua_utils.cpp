@@ -114,9 +114,18 @@ void CLuaInterpreter::register_function(const char * function_name, const lua_CF
     lua_setglobal(_L, function_name); // TODO: check return codes
 }
 
-void register_function(const char * module_name, const char * function_name, const lua_CFunction f)
+void CLuaInterpreter::register_function(const char * module_name, const char * function_name, const lua_CFunction f)
 {
-    // TODO: implement
+    lua_getglobal(_L, module_name);
+    if (!lua_istable(_L, -1)) {
+        lua_pop(_L, 1);
+        lua_newtable(_L);
+        lua_pushvalue(_L, -1);
+        lua_setglobal(_L, module_name);
+    }
+    lua_pushcfunction(_L, f);
+    lua_setfield(_L, -2, function_name);
+    lua_pop(_L, 1);
 }
 
 void set_lightuserdata(lua_State*L,const char * name, void * data)
