@@ -35,6 +35,7 @@ void session::handle_recv(const boost::system::error_code& error, size_t bytes_t
 
   std::string data(data_, bytes_transferred); // WARNING: makes a copy of the buffer.
 
+  response_write_buffer_.clear();
   CLuaCall call_handle_recv(interpreter_, "handle_recv");
   call_handle_recv << data;
   call_handle_recv.call(1); // number of results expected. Must match the number of operator>> calls.
