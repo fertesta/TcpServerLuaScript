@@ -91,6 +91,16 @@ void server::session_erase(session * s) {
 }
 
 
+server::server(io::io_service& io_service, short port, const std::string& luascript)
+  : io_service_(io_service),
+    acceptor_(io_service, io::ip::tcp::endpoint(io::ip::tcp::v6(), port)),
+    luascript_(luascript)
+{
+  boost::system::error_code ec;
+  acceptor_.set_option(io::ip::v6_only(false), ec); // dual-stack; ignored on v4-only systems
+  start_accept();
+}
+
 void server::start_accept() {
   auto new_session = std::make_shared<session>(this, io_service_, luascript_);
   sessions_.push_back(new_session);
