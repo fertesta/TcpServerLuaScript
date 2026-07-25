@@ -41,10 +41,6 @@ Application::Application(int argc, const char ** argv) {
     if (!vm.count("script")) {
         throw std::runtime_error("missing parameter 'script'");
     }
-    
-    if (!vm.count("port")) {
-        throw std::runtime_error("missing parameter 'port'");
-    }
 
 //    _interpreter.register_function("mysin" ,l_sin);
 //    _interpreter.load_file(_script);    
