@@ -93,18 +93,17 @@ void server::session_erase(session * s) {
 
 void server::start_accept() {
   auto new_session = std::make_shared<session>(this, io_service_, luascript_);
-  sessions_.push_back(new_session);
   acceptor_.async_accept(new_session->socket(),
       boost::bind(&server::handle_accept, this, new_session,
         boost::asio::placeholders::error));
 }
 
 void server::handle_accept(SessionPtr new_session, const boost::system::error_code& error) {
-  if (error) {
-    std::cerr << "server::handle_accept() error " << error << std::endl;
-    session_erase(new_session.get());
-  } else {
+  if (!error) {
+    sessions_.push_back(new_session);
     new_session->handle_accepted();
+  } else {
+    std::cerr << "server::handle_accept() error " << error << std::endl;
   }
   start_accept();
 }
