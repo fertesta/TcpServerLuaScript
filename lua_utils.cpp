@@ -79,7 +79,9 @@ CLuaOpt& CLuaOpt::operator >>(std::string& v)
 CLuaInterpreter::CLuaInterpreter()
 : _L(nullptr)
 {
-	_L=luaL_newstate();
+	_L = luaL_newstate();
+	if (!_L)
+		throw lua_exception("CLuaInterpreter: luaL_newstate() failed (out of memory).");
 	luaL_openlibs(_L);
 }
 
