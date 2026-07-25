@@ -15,9 +15,6 @@ const char * api_session_pointer = "yhRI3OnFVRuq2JRh";
 */
 int funkyfunction(lua_State* L) {
   void * user_data = get_lightuserdata(L, api_session_pointer);
-  if(nullptr == user_data) {
-    std::cerr << "funkyfunction() failed to retrieve light user data\n";
-  }
   session * session_ptr = reinterpret_cast<session*>(user_data);
   std::string s;
   CLuaOpt(L, 1) >> s;
