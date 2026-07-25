@@ -169,14 +169,15 @@ void CLuaCall::call(int nresults)
 		return;
 	case LUA_ERRRUN:
 		report(L_);
-        //throw lua_exception("LUA_ERRRUN: Lua script runtime error.");
-            
+		throw lua_exception("LUA_ERRRUN: Lua script runtime error.");
 	case LUA_ERRMEM:
 		report(L_);
-		lua_exception("LUA_ERRMEM: memory allocation error");
+		throw lua_exception("LUA_ERRMEM: memory allocation error.");
 	case LUA_ERRERR:
 		report(L_);
-		lua_exception("LUA_ERRRUN: error while running the error handler function.");
+		throw lua_exception("LUA_ERRERR: error while running the error handler function.");
+	default:
+		throw lua_exception("CLuaCall::call(): unknown lua_pcall error code.");
 	}
 }
 
