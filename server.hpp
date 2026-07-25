@@ -66,12 +66,8 @@ class server
   std::string luascript_;
   std::vector<SessionPtr> sessions_;
 public:
-  server(io::io_service& io_service, short port, const std::string& luascript)
-    : io_service_(io_service),
-      acceptor_(io_service, io::ip::tcp::endpoint(io::ip::tcp::v4(), port)),
-      luascript_(luascript) {
-    start_accept();
-  }
+  server(io::io_service& io_service, short port, const std::string& luascript);
+
 
   void session_erase(session * s);
 
