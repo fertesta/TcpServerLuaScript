@@ -14,13 +14,6 @@
 namespace po = boost::program_options;
 namespace io = boost::asio;
 
-// testing exporting some C function to lua
-int l_sin (lua_State *L) {
-    double d = luaL_checknumber(L, 1);
-    lua_pushnumber(L, sin(d));
-    return 1;  /* number of results */
-}
-
 
 Application::Application(int argc, const char ** argv) {
     po::options_description desc("Allowed options");
@@ -40,10 +33,6 @@ Application::Application(int argc, const char ** argv) {
     
     if (!vm.count("script")) {
         throw std::runtime_error("missing parameter 'script'");
-    }
-    
-    if (!vm.count("port")) {
-        throw std::runtime_error("missing parameter 'port'");
     }
 
 //    _interpreter.register_function("mysin" ,l_sin);

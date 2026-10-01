@@ -31,8 +31,7 @@ CLuaOpt::CLuaOpt(lua_State*L, int nargs)
 
 CLuaOpt::~CLuaOpt()
 {
-	for(int i=0;i<nopts_;i++)
-		lua_pop(L_,-1);
+	lua_pop(L_, nopts_);
 }
 
 CLuaOpt& CLuaOpt::operator >>(double& v)
@@ -80,7 +79,9 @@ CLuaOpt& CLuaOpt::operator >>(std::string& v)
 CLuaInterpreter::CLuaInterpreter()
 : _L(nullptr)
 {
-	_L=luaL_newstate();
+	_L = luaL_newstate();
+	if (!_L)
+		throw lua_exception("CLuaInterpreter: luaL_newstate() failed (out of memory).");
 	luaL_openlibs(_L);
 }
 
@@ -115,9 +116,18 @@ void CLuaInterpreter::register_function(const char * function_name, const lua_CF
     lua_setglobal(_L, function_name); // TODO: check return codes
 }
 
-void register_function(const char * module_name, const char * function_name, const lua_CFunction f)
+void CLuaInterpreter::register_function(const char * module_name, const char * function_name, const lua_CFunction f)
 {
-    // TODO: implement
+    lua_getglobal(_L, module_name);
+    if (!lua_istable(_L, -1)) {
+        lua_pop(_L, 1);
+        lua_newtable(_L);
+        lua_pushvalue(_L, -1);
+        lua_setglobal(_L, module_name);
+    }
+    lua_pushcfunction(_L, f);
+    lua_setfield(_L, -2, function_name);
+    lua_pop(_L, 1);
 }
 
 void set_lightuserdata(lua_State*L,const char * name, void * data)
@@ -169,14 +179,15 @@ void CLuaCall::call(int nresults)
 		return;
 	case LUA_ERRRUN:
 		report(L_);
-        //throw lua_exception("LUA_ERRRUN: Lua script runtime error.");
-            
+		throw lua_exception("LUA_ERRRUN: Lua script runtime error.");
 	case LUA_ERRMEM:
 		report(L_);
-		lua_exception("LUA_ERRMEM: memory allocation error");
+		throw lua_exception("LUA_ERRMEM: memory allocation error.");
 	case LUA_ERRERR:
 		report(L_);
-		lua_exception("LUA_ERRRUN: error while running the error handler function.");
+		throw lua_exception("LUA_ERRERR: error while running the error handler function.");
+	default:
+		throw lua_exception("CLuaCall::call(): unknown lua_pcall error code.");
 	}
 }
 

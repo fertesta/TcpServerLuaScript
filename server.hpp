@@ -22,13 +22,13 @@ using SessionPtr = std::shared_ptr<session>;
 namespace io = boost::asio;
 
 class session {
-  static const int max_length = 1024;
-  char data_[max_length];
   io::ip::tcp::socket socket_;
+  boost::asio::streambuf read_buf_;
   std::string response_write_buffer_;
   CLuaInterpreter interpreter_;
   io::io_service& io_service_;
   server * server_ = nullptr;
+  bool connected_ = false;
 public:
   session(server * srv, io::io_service& io_service, const std::string& luascript)
     : socket_(io_service), io_service_(io_service), server_(srv) {
@@ -44,12 +44,13 @@ public:
   }
 
   void async_read_some() {
-    socket_.async_read_some(io::buffer(data_, max_length),
+    boost::asio::async_read_until(socket_, read_buf_, '\n',
       boost::bind(&session::handle_recv, this,
         io::placeholders::error,
         io::placeholders::bytes_transferred));
   }
 
+  bool is_connected() const { return connected_; }
   void handle_accepted();
   void handle_disconnect();
 private:
@@ -65,12 +66,8 @@ class server
   std::string luascript_;
   std::vector<SessionPtr> sessions_;
 public:
-  server(io::io_service& io_service, short port, const std::string& luascript)
-    : io_service_(io_service),
-      acceptor_(io_service, io::ip::tcp::endpoint(io::ip::tcp::v4(), port)),
-      luascript_(luascript) {
-    start_accept();
-  }
+  server(io::io_service& io_service, short port, const std::string& luascript);
+
 
   void session_erase(session * s);
 

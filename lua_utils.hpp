@@ -58,6 +58,11 @@ public:
     CLuaInterpreter(void);
     ~CLuaInterpreter(void);
 
+    CLuaInterpreter(const CLuaInterpreter&) = delete;
+    CLuaInterpreter& operator=(const CLuaInterpreter&) = delete;
+    CLuaInterpreter(CLuaInterpreter&&) = delete;
+    CLuaInterpreter& operator=(CLuaInterpreter&&) = delete;
+
     void load_file(const std::string& filename);
     void load_file(const char * filename);
     lua_State * getState() const { return _L; }
